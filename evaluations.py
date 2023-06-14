@@ -1,3 +1,5 @@
+import os
+
 from env_utils import UnevenMazeNormalized, UnevenMaze
 from ray.rllib.utils.framework import try_import_tf
 tf1, tf, tfv = try_import_tf()
@@ -21,7 +23,7 @@ config = {
 # Register the environment
 register_env("uneven_maze", lambda conf: UnevenMazeNormalized(conf))
 
-agent = Algorithm.from_checkpoint("checkpoints/checkpoints_30/")
+agent = Algorithm.from_checkpoint("checkpoints/checkpoint_30/")
 # Test the trained agent
 env = UnevenMazeNormalized(config)
 s, _ = env.reset(options={"cost_step": 1.0, "cost_height": 50, "start_position": [0, 0]})
@@ -42,4 +44,5 @@ while not terminated and not truncated:
     sum_r += r
     step_counter += 1
 print(sum_r)
+os.makedirs("images", exist_ok=True)
 env._fig.savefig("images/episode_with_" + str(step_counter) +"_steps" + ".png")

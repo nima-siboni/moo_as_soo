@@ -33,5 +33,5 @@ for _ in range(200):
     print(_, history["episode_reward_mean"])
     # create a directory to save the checkpoints every 10 iterations
     if _ % 10 == 0:
-        os.makedirs("checkpoints/checkpoints_"+str(_), exist_ok=True)
-        agent.save_checkpoint("checkpoints/checkpoints_"+str(_))
+        os.makedirs("checkpoints/checkpoint_"+str(_), exist_ok=True)
+        agent.save_checkpoint("checkpoints/checkpoint_"+str(_))
