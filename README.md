@@ -1,5 +1,5 @@
-# MOO_as_SOO
-Welcome to the Multi-Objective Optimization with Reinforcement Learning (RLMO) repository! This project aims to tackle the challenges of multi-objective optimization problems by leveraging the power of reinforcement learning (RL) techniques.
+# MOO as SOO
+Welcome to the Multi-Objective Optimization (MOO) with Reinforcement Learning repository! This project aims to tackle the challenges of multi-objective optimization problems by leveraging the power of single objective optimization (SOO) reinforcement learning (RL) techniques.
 
 # Introduction
 Reinforcement learning provides an alternative approach for addressing optimization problems. 
