@@ -22,8 +22,11 @@ config = {
 register_env("uneven_maze", lambda conf: UnevenMazeNormalized(conf))
 
 # Define the configuration of the DQN algorithm
-agent = DQNConfig().framework("tf2").environment(env="uneven_maze", env_config=config).rollouts(
-    num_envs_per_worker=4, num_rollout_workers=4).build()
+agent = DQNConfig().\
+    framework("tf2").\
+    environment(env="uneven_maze", env_config=config).\
+    rollouts(num_envs_per_worker=4, num_rollout_workers=4).\
+    build()
 
 for _ in range(200):
     history = agent.train()
