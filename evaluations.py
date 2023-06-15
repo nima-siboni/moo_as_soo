@@ -23,7 +23,7 @@ config = {
 # Register the environment
 register_env("uneven_maze", lambda conf: UnevenMazeNormalized(conf))
 
-agent = Algorithm.from_checkpoint("checkpoints/checkpoint_30/")
+agent = Algorithm.from_checkpoint("checkpoints/checkpoint_50/")
 # Test the trained agent
 env = UnevenMazeNormalized(config)
 s, _ = env.reset(options={"cost_step": 1.0, "cost_height": 50, "start_position": [0, 0]})
