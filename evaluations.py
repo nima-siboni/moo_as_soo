@@ -1,11 +1,11 @@
 import os
 
-from env_utils import UnevenMazeNormalized, UnevenMaze
+from env_utils import UnevenMazeNormalized
 from ray.rllib.utils.framework import try_import_tf
 tf1, tf, tfv = try_import_tf()
 tf.compat.v1.enable_eager_execution()
 
-from uneven_maze.uneven_maze import sample_terrain_function
+from uneven_maze import sample_terrain_function
 from ray.tune.registry import register_env
 from ray.rllib.algorithms.algorithm import Algorithm
 config = {

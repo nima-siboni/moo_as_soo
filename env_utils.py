@@ -1,4 +1,4 @@
-from uneven_maze.uneven_maze import UnevenMaze
+from uneven_maze import UnevenMaze
 
 # create a wrapper around UnevenMaze where the observation is normalized.
 # This is useful for training neural networks.

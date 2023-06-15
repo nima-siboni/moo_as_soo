@@ -2,7 +2,7 @@ import os
 
 from ray.rllib.algorithms.dqn.dqn import DQNConfig
 from env_utils import UnevenMazeNormalized
-from uneven_maze.uneven_maze import sample_terrain_function
+from uneven_maze import sample_terrain_function
 from ray.tune.registry import register_env
 
 config = {
