@@ -32,4 +32,3 @@ class UnevenMazeNormalized(UnevenMaze):
         )
 
         return observation
-
