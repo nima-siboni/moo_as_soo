@@ -12,4 +12,4 @@ scikit-image~=0.21.0
 lz4~=4.3.2
 tensorflow==2.12.0
 tensorboardX~=2.6
-# -e git+ssh://git@github.com:nima-siboni/uneven_maze.git#egg=uneven_maze
+-e git+ssh://git@github.com/nima-siboni/uneven_maze.git#egg=uneven_maze
