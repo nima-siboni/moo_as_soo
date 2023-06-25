@@ -1,57 +1,90 @@
-# MOO as SOO
-Welcome to the Multi-Objective Optimization (MOO) with Reinforcement Learning repository! This project aims to tackle the challenges of multi-objective optimization problems by leveraging the power of single objective optimization (SOO) reinforcement learning (RL) techniques.
+# RL for Adaptive Multi-Objective Sequential Decision-Making
+Welcome to the RL for Adaptive Multi-Objective Sequential Decision-Making repository! This project aims to tackle
+one of the challenges of multi-objective optimization in the context of decision-making problems by leveraging the power of single objective optimization
+(SOO) reinforcement learning (RL) techniques.
 
 # Introduction
-Reinforcement learning provides an alternative approach for addressing optimization problems.
-Although RL has proven to be a viable approach for many optimization problems, the well-established RL algorithms are
-exclusively deal with single objective optimization (SOO) problems. This imposes a signifcant restriction in
-applications of RL in industry as many optimization problems are essentially multi-objective optimization (MOO)
-problems.
-
 In conventional optimization methods, dealing with multiple objectives often involves combining
-them into a single objective function by assigning different weights to each objective. However,
-this approach has certain disadvantegous:
-- it may overlook the intricate trade-offs and complexities that arise in multi-objective
-scenarios.
-- for any new weights for combining the objectives, one needs to re-run the optimization procedure.
+these objectives into a single objective function; The single objective function is commonly constructed as a weighted
+average of different objectives, where the weights are chosen by the domain experts, and the weights represent the
+condition under which the optimal behavior is looked for. This approach is widely used in
+industry as it is easy to implement and the optimization problem is reduced to a SOO which can be solved with
+well-established methods.
 
-In this repo, we utilize the power of SOO RL for addressing MOO problems.
+A disadvantage of casting the MOO into a SOO is that for any new set of weights one needs to re-run the whole optimization procedure. In many cases, this is not feasible as the
+optimization procedure is computationally expensive, e.g. "online" decision-making setups where the weights change and
+immediate adaption of the objective is required. In this work, we address this challenge by leveraging the power of
+ single objective reinforcement learning.  A simple example of changing weights is the multi-objective navigation where
+you want to find the optimal behavior for reaching your destination (i) as quick as possible and (ii) as fuel efficient
+as possible. The weights for combining these two objectives could change depending on your situation. For example, in
+case of an emergency you might want to reach your destination as quick as possible and fuel consumption is not a concern.
+On the other hand, if you are on a long trip, you might want to save fuel and the time efficiency is not the greater concern.
+In this example, the weights for combining the two objectives are different in the two situations. In these cases the
+optimization should be re-run for the new circumstance (i.e. new weights). This is not feasible in many cases as the
+optimization procedure is computationally expensive, specially in realistic applications. In this work, we address this
+challenge by leveraging the power of single objective reinforcement learning.
+
+More precisely, we train an agent to behave optimally under any set of weights. This way, the agent can be used to address
+the MOO problem without the need to re-run the optimization procedure for different weights, although training itself
+becomes more challenging.
+
+We achieve this by exposing the agent to different conditions (reflected in the weights) during the training while at
+the same time we inform the agent about the weights under which it is operating. This way the agent has the chance of
+learning the optimal behavior for any set of weights. More details and results are shown in the "approach" and "demo"
+sections.
+
 
 # Our approach:
-Generally speaking our approach is to cast the MOO to a SOO where the optimization problem is made more general.
-More precisely:
-- **Augmenting the Observation:** we first cast the MOO into a SOO problem, where the weights for combining different objectives is passed to the agent
-as a part of the environment's observation. This way the agent has the chance of learning the optimal action based on those weights. This can be done with a wrapper
-exposes the values of the weights in the observations,
-- **Covering the Relevant Paremeter Range:** we create different instances of the environment which are different from each other in the values of those weights.
-the values for the weight can be chosen randomly in the range which is relevant for the business.
-- **Training the agent** train the agent on those augumented environments!
+As outlined above, our approach to address the adaptiveness required for changing the weights of the objectives is to
+train an agent to behave optimally under any set of weights. More precisely, this is done by three modifications in the
+environment:
+
+- **Augmenting the Observation:** we modify the environment by passing the weights used for casting to the agent
+as a part of the environment's observation. This is the first step to give the agent has the chance of learning the
+optimal behavior in different circumstances. The first step can be done with a minimal wrapper which exposes the values
+of the weights in the observations. A sample wrapper is provided in [env_utils.py](./env_utils.py)
+- **Covering the Relevant Paremeter Range:** during the training (more precisely during interactions with the environment,
+where transition samples are collected) we need to create different circumstances for the agent. This can be done by
+creating instances of the environment which are different from each other in the values of those weights. This can also
+be done in a wrapper which overwrites the `reset` method of the environment, if this feature is not already implemented in
+the environment. For the test environment we used in this repository this is already implemented in the environment itself.
+- **Augmenting the Reward:** we modify the environment by passing the weights used for casting to the agent.
+This can also be done in a wrapper which overwrites the `step` method of the environment, if this feature is not already
+implemented in the environment. For the test environment we used in this repository this is already implemented in
+the environment itself.
 
 # Characteristics of our approach
-Characteristics of the RL-based Multi-Objective Optimization approach in this repository include:
+Characteristics of the approach presented in this repository includes:
 
 **Adaptive Optimization**: The agent can dynamically
-adjust its actions based on the observed weights, even during one episode. This is could be very interesting
-for business where the weights of different objectives can change when the process is already started. The approach here allows for
-**online reaction to the changes in the objective functions**! An example is shown in the "Demo" section.
+adjust its actions based on the observed weights, even during one episode. This could be very interesting
+for business where the weights of different objectives can change when the process is already started. The approach here
+allows for **online reaction to the changes in the objective functions**. An example is shown in the "Demo" section.
+One should emphasize that the computational cost of the evaluating the performance of a trained agent under changing
+conditions can be order of magnitudes smaller than re-running the optimization procedure for the new weights.
 
 **Flexibility in Objective Trade-offs**: By formulating multi-objective optimization as a reinforcement learning
 problem, this approach allows for flexible trade-offs between objectives.
 The agent can learn to adapt its decision-making based on the specific weights assigned to each objective, capturing the
 complexities and trade-offs inherent in multi-objective scenarios.
 
-**Pareto Front Exploration**: As the computational cost of changing the weights of the objective is much smaller than of
-the similar approach with conventional
-optimization techniques, the trained RL agent can be used to explores the Pareto front,
-identifying non-dominated solutions that represent optimal trade-offs between objectives. This enables decision-makers to analyze and visualize a diverse set of solutions,
-empowering them to make informed decisions based on their preferences. One should note that the cost of evaluating the performance of an agent is orders of magnitude smaller
-than re-running a conventional optimization with a new set of weights (some references here!).
-
-By leveraging reinforcement learning in multi-objective optimization, this repository offers a promising approach that overcomes the limitations of conventional methods, providing a more flexible, adaptive, and efficient solution for complex optimization problems with multiple objectives.
+**Pareto Front Exploration in Sequential Decision-Making Settings**: As the computational cost of changing the weights of the objective is much smaller than of
+the similar approach with conventional optimization techniques, the trained RL agent can be used to explore the Pareto front,
+identifying non-dominated solutions that represent optimal trade-offs between objectives. This enables decision-makers
+to analyze and visualize a diverse set of solutions, empowering them to make informed decisions based on their
+preferences.
 
 # Installation and Usage
-Needs further work to be a clean code!
-
+First create a python virtual environment (for example with `conda`) and activate it.
+```bash
+conda create -n moo_as_soo python=3.10
+conda activate moo_as_soo
+```
+```bash
+git clone
+cd moo_as_soo
+pip install -e .
+```
 # Demo
 For demonstration purposes, we used the simple environment of [UnevenMaze](https://github.com/nima-siboni/uneven_maze).
 In this environment, an agent shall find the path to a destination while minimizing:

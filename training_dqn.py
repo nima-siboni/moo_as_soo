@@ -30,7 +30,7 @@ agent = (
     .build()
 )
 
-for _ in range(200):
+for _ in range(500):
     history = agent.train()
     print(_, history["episode_reward_mean"])
     # create a directory to save the checkpoints every 10 iterations
