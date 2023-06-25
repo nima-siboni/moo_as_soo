@@ -1,17 +1,17 @@
-# RL for Adaptive Multi-Objective Sequential Decision-Making
+# Multi-task RL for Adaptive Multi-Objective Sequential Decision-Making
 Welcome to the RL for Adaptive Multi-Objective Sequential Decision-Making repository! This project aims to tackle
-one of the challenges of multi-objective optimization in the context of decision-making problems by leveraging the power of single objective optimization
-(SOO) reinforcement learning (RL) techniques.
+one of the challenges of multi-objective optimization in the context of decision-making problems by leveraging the
+multi-task single objective reinforcement learning (RL) technique.
 
 # Introduction
 In conventional optimization methods, dealing with multiple objectives often involves combining
 these objectives into a single objective function; The single objective function is commonly constructed as a weighted
 average of different objectives, where the weights are chosen by the domain experts, and the weights represent the
 condition under which the optimal behavior is looked for. This approach is widely used in
-industry as it is easy to implement and the optimization problem is reduced to a SOO which can be solved with
-well-established methods.
+industry as it is easy to implement and the optimization problem is reduced to a single objective optimization (SOO)
+which can be solved with well-established methods.
 
-A disadvantage of casting the MOO into a SOO is that for any new set of weights one needs to re-run the whole optimization procedure. In many cases, this is not feasible as the
+A disadvantage of casting the multi-objective optimization (MOO) problem into a SOO is that for any new set of weights one needs to re-run the whole optimization procedure. In many cases, this is not feasible as the
 optimization procedure is computationally expensive, e.g. "online" decision-making setups where the weights change and
 immediate adaption of the objective is required. In this work, we address this challenge by leveraging the power of
  single objective reinforcement learning.  A simple example of changing weights is the multi-objective navigation where
@@ -22,11 +22,11 @@ On the other hand, if you are on a long trip, you might want to save fuel and th
 In this example, the weights for combining the two objectives are different in the two situations. In these cases the
 optimization should be re-run for the new circumstance (i.e. new weights). This is not feasible in many cases as the
 optimization procedure is computationally expensive, specially in realistic applications. In this work, we address this
-challenge by leveraging the power of single objective reinforcement learning.
+challenge by leveraging the power of multi-task single objective reinforcement learning.
 
 More precisely, we train an agent to behave optimally under any set of weights. This way, the agent can be used to address
 the MOO problem without the need to re-run the optimization procedure for different weights, although training itself
-becomes more challenging.
+becomes more challenging. This is a straightforward adaption of multi-task RL, where each task is actually a new set of priorities (i.e. a new set of weights).
 
 We achieve this by exposing the agent to different conditions (reflected in the weights) during the training while at
 the same time we inform the agent about the weights under which it is operating. This way the agent has the chance of
